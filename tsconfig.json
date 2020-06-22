@@ -1,0 +1,24 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": ".",
+        "target": "ES6",
+        "module": "commonjs",
+        "jsx": "react",
+        "importHelpers": true,
+        "lib": [
+            "dom",
+            "es2019"
+        ],
+        "moduleResolution": "node",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@modules/*": ["./src/modules/*"]
+        },
+        "strict": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "sourceMap": true,
+    }
+}
