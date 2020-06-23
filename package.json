@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
+    "antd": "^4.3.5",
     "eslint": "^7.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
