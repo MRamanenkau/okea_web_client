@@ -1,51 +1,29 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { Layout, Input, Typography, Space, Carousel } from 'antd';
+import { HashRouter, Switch, Route } from 'react-router-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { rootReducer } from './reducers/rootReducer';
+import { Main } from './components/Main';
+import { AdminLogin } from './components/AdminLogin';
 import 'antd/dist/antd.css';
+import { GlobalStyle } from './styles/globalStyle';
 
-const { Header, Footer, Sider, Content } = Layout;
-const { Search } = Input;
-const { Title } = Typography;
+export const store = createStore(rootReducer, composeWithDevTools());
 
-render(
+const App = (
     <>
-        <Layout>
-            <Header style={{ color: 'blue'}}>
-                <Space>
-                    <Title style={{ color: 'red'}} level={3}>OKEA</Title>
-                    <Search
-                        placeholder="input search text"
-                        onSearch={value => console.log(value)}
-                        style={{ width: 200 }}
-                    />
-                </Space>
-            </Header>
-            <Layout>
-                <Sider>
-                    Categories
-                </Sider>
-                <Content>
-                    <Carousel autoplay>
-                        <div>
-                            <h3>1</h3>
-                        </div>
-                        <div>
-                            <h3>2</h3>
-                        </div>
-                        <div>
-                            <h3>3</h3>
-                        </div>
-                        <div>
-                            <h3>4</h3>
-                        </div>
-                    </Carousel>
-                </Content>
-            </Layout>
-            <Content>
-                Content
-            </Content>
-            <Footer>Footer</Footer>
-        </Layout>
-    </>,
-    document.getElementById('app'),
+        <GlobalStyle />
+        <Provider store={store}>
+            <HashRouter>
+                <Switch>
+                    <Route path="/admin" component={AdminLogin} />
+                    <Route path="/" component={Main} />
+                </Switch>
+            </HashRouter>
+        </Provider>
+    </>
 );
+
+render(App, document.getElementById('app'));

@@ -1,0 +1,22 @@
+{
+  "processors": [
+    "stylelint-processor-styled-components"
+  ],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components",
+    "stylelint-config-rational-order"
+  ],
+  "rules": {
+    "order/properties-order": [],
+    "indentation": 4,
+    "string-quotes": "single",
+    "max-line-length": 120,
+    "at-rule-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "declaration-colon-newline-after": null
+  }
+}

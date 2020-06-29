@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
 
 const isDevelopmentEnvironment = process.env.NODE_ENV === 'development';
 const isProductionEnvironment = process.env.NODE_ENV === 'production';
@@ -12,35 +13,30 @@ const isProductionEnvironment = process.env.NODE_ENV === 'production';
 const getOptimizationConfig = () => {
     const config = {
         splitChunks: {
-            chunks: 'all'
-        }
+            chunks: 'all',
+        },
     };
 
     if (isProductionEnvironment) {
-        config.minimizer = [
-            new OptimizeCssAssetsWebpackPlugin(),
-            new TerserWebpackPlugin(),
-        ]
+        config.minimizer = [new OptimizeCssAssetsWebpackPlugin(), new TerserWebpackPlugin()];
     }
 
     return config;
 };
 
-const getFilename = extension => isDevelopmentEnvironment ? `[name].${extension}` : `[name].[hash].${extension}`;
+const getFilename = (extension) => (isDevelopmentEnvironment ? `[name].${extension}` : `[name].[hash].${extension}`);
 
-const getBabelOptions = preset => {
+const getBabelOptions = (preset) => {
     const options = {
-        presets: [
-            '@babel/preset-env',
-        ]
-    }
+        presets: ['@babel/preset-env'],
+    };
 
     if (preset) {
         options.presets.push(preset);
     }
 
     return options;
-}
+};
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -50,7 +46,7 @@ module.exports = {
     },
     output: {
         filename: getFilename('js'),
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
@@ -66,20 +62,20 @@ module.exports = {
             template: './index.html',
             minify: {
                 collapseWhitespace: isProductionEnvironment,
-            }
+            },
         }),
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
             patterns: [
                 {
                     from: path.resolve(__dirname, 'src/favicon.ico'),
-                    to: path.resolve(__dirname, 'dist')
+                    to: path.resolve(__dirname, 'dist'),
                 },
             ],
         }),
         new MiniCssExtractPlugin({
-            filename: getFilename('css')
-        })
+            filename: getFilename('css'),
+        }),
     ],
     module: {
         rules: [
@@ -91,9 +87,10 @@ module.exports = {
                         options: {
                             hmr: isDevelopmentEnvironment,
                             reloadAll: true,
-                        }
+                        },
                     },
-                    'css-loader'],
+                    'css-loader',
+                ],
             },
             {
                 test: /\.(png|jpg|svg|gif)$/,
@@ -101,7 +98,7 @@ module.exports = {
             },
             {
                 test: /\.(ttf|woff|woff2|eot)$/,
-                use: ["file-loader"],
+                use: ['file-loader'],
             },
             {
                 test: /\.(ts|tsx)$/,
@@ -115,13 +112,14 @@ module.exports = {
                         loader: 'ts-loader',
                         options: {
                             transpileOnly: true,
+                            getCustomTransformers: () => ({ before: [createStyledComponentsTransformer()] }),
                         },
                     },
                     {
-                        loader: "eslint-loader",
-                    }
+                        loader: 'eslint-loader',
+                    },
                 ],
-            }
-        ]
-    }
+            },
+        ],
+    },
 };
