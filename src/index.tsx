@@ -7,6 +7,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { rootReducer } from './reducers/rootReducer';
 import { Main } from './components/Main';
 import { AdminLogin } from './components/AdminLogin';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AdminPanel } from './components/AdminPanel';
 import 'antd/dist/antd.css';
 import { GlobalStyle } from './styles/globalStyle';
 
@@ -18,7 +20,8 @@ const App = (
         <Provider store={store}>
             <HashRouter>
                 <Switch>
-                    <Route path="/admin" component={AdminLogin} />
+                    <ProtectedRoute exact path="/admin-panel" component={AdminPanel} />
+                    <Route exact path="/admin" component={AdminLogin} />
                     <Route path="/" component={Main} />
                 </Switch>
             </HashRouter>
