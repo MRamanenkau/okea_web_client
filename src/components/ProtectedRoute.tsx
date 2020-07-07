@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-
-const isAuthenticated = true;
+import authentication from '../helpers/Authentication';
 
 export const ProtectedRoute = ({ component: Component, ...rest }: RouteProps): JSX.Element | null => {
     if (!Component) {
@@ -12,13 +11,13 @@ export const ProtectedRoute = ({ component: Component, ...rest }: RouteProps): J
         <Route
             {...rest}
             render={(props) =>
-                isAuthenticated ? (
+                authentication.isAuthenticated() ? (
                     <Component {...props} />
                 ) : (
                     <Redirect
                         to={{
-                            pathname: '/login',
-                            state: { from: props.location },
+                            pathname: '/admin',
+                            state: { from: location },
                         }}
                     />
                 )

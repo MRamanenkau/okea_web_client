@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
+const hosts = require('./hosts.json');
 
 const isDevelopmentEnvironment = process.env.NODE_ENV === 'development';
 const isProductionEnvironment = process.env.NODE_ENV === 'production';
@@ -53,8 +54,18 @@ module.exports = {
     },
     optimization: getOptimizationConfig(),
     devServer: {
+        host: 'okea.test',
         port: 4200,
         hot: isDevelopmentEnvironment,
+        disableHostCheck: true,
+        proxy: {
+            '/api': {
+                target: hosts.webClient,
+                secure: false,
+                pathRewrite: { '^/api': '' },
+            },
+        },
+        https: true,
     },
     devtool: isDevelopmentEnvironment ? 'source-map' : '',
     plugins: [
